@@ -44,28 +44,35 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 RUN_DATE_MMDDYY = datetime.now().strftime("%m.%d.%y")
 
 
-def get_daily_run_index(base_dir: str, date_str: str) -> int:
-    """Return next run index for the given date by scanning existing dated folders.
+def get_daily_run_index(day_dir: str) -> int:
+    """Return next run index for the given date by scanning the daily folder.
 
-    Matches folder names that end with "-<date_str>" and extracts the numeric segment
-    immediately preceding the date. Works for patterns like:
-      - "Materials-<N>-<date_str>"
-      - "(mat <id>)-<N>-<date_str>"
+    Looks for immediate subfolders named like:
+      - "Materials-<N>"
+      - "Mat. <id>-<N>"
+    Returns max(<N>) + 1, or 1 if none.
     """
     max_idx = 0
+    if not os.path.isdir(day_dir):
+        return 1
     try:
-        for root, dirs, _ in os.walk(base_dir):
-            for d in dirs:
-                if d.endswith(f"-{date_str}"):
-                    head = d[: -(len(date_str) + 1)]  # strip "-<date_str>"
-                    if '-' in head:
-                        idx_token = head.split('-')[-1]
-                        try:
-                            idx_val = int(idx_token)
-                            if idx_val > max_idx:
-                                max_idx = idx_val
-                        except ValueError:
-                            continue
+        for name in os.listdir(day_dir):
+            path = os.path.join(day_dir, name)
+            if not os.path.isdir(path):
+                continue
+            if name.startswith("Materials-"):
+                try:
+                    idx_val = int(name.split("-", 1)[1])
+                    max_idx = max(max_idx, idx_val)
+                except Exception:
+                    continue
+            elif name.startswith("Mat. ") and '-' in name:
+                try:
+                    idx_token = name.rsplit('-', 1)[-1]
+                    idx_val = int(idx_token)
+                    max_idx = max(max_idx, idx_val)
+                except Exception:
+                    continue
     except Exception:
         pass
     return max_idx + 1
@@ -1014,11 +1021,13 @@ def identify_top_candidates(vqe_energies, exact_energies, optimal_parameters, pa
 
 if __name__ == "__main__":
     # Generate material database
-    # Determine daily run index for consistent naming across outputs
-    run_index = get_daily_run_index(script_dir, RUN_DATE_MMDDYY)
+    # Create per-day folder and determine daily run index
+    day_dir = os.path.join(script_dir, f"{RUN_DATE_MMDDYY}")
+    os.makedirs(day_dir, exist_ok=True)
+    run_index = get_daily_run_index(day_dir)
 
-    # Create dated folder for non per-material outputs, including daily index
-    materials_dir = os.path.join(script_dir, f"Materials-{run_index}-{RUN_DATE_MMDDYY}")
+    # Create non per-material outputs folder inside the per-day folder
+    materials_dir = os.path.join(day_dir, f"Materials-{run_index}")
     os.makedirs(materials_dir, exist_ok=True)
 
     materials_database = QuantumMaterialDatabase(num_materials)
@@ -1077,8 +1086,8 @@ if __name__ == "__main__":
         material_id = result['material_id']
         material_output = result['output']
 
-        # Create per-material output directory: "Mat. <id>-<daily index>-MM.DD.YY"
-        material_dir = os.path.join(script_dir, f"Mat. {material_id}-{run_index}-{RUN_DATE_MMDDYY}")
+        # Create per-material output directory inside per-day folder: "Mat. <id>-<daily index>"
+        material_dir = os.path.join(day_dir, f"Mat. {material_id}-{run_index}")
         os.makedirs(material_dir, exist_ok=True)
 
         # Print or save the output for each material into its folder (with 'Mat.')
