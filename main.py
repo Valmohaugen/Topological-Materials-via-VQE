@@ -1077,33 +1077,33 @@ if __name__ == "__main__":
         material_id = result['material_id']
         material_output = result['output']
 
-        # Create per-material output directory: "<id>-<daily index>-MM.DD.YY"
-        material_dir = os.path.join(script_dir, f"{material_id}-{run_index}-{RUN_DATE_MMDDYY}")
+        # Create per-material output directory: "Mat. <id>-<daily index>-MM.DD.YY"
+        material_dir = os.path.join(script_dir, f"Mat. {material_id}-{run_index}-{RUN_DATE_MMDDYY}")
         os.makedirs(material_dir, exist_ok=True)
 
-        # Print or save the output for each material into its folder (remove 'Mat.')
-        material_output_path = os.path.join(material_dir, f"{material_id} VQE Material Output.txt")
+        # Print or save the output for each material into its folder (with 'Mat.')
+        material_output_path = os.path.join(material_dir, f"Mat. {material_id} VQE Material Output.txt")
         with open(material_output_path, 'w', encoding='utf-8') as file:
             file.write('\n'.join(material_output))
         
         # Unpack the VQE outcomes and analyze the results
         vqe_energies, exact_energies, optimal_parameters, errors, energy_gaps, output_list, fig_mu, fig_t, fig_delta = analyze_results(vqe_energies, exact_energies, optimal_parameters, parameter_combinations, total_seconds)
         
-        # Save the figures for each parameter: "<id> vs. Mu/Delta/t"
-        energy_gap_fig_mu_path = os.path.join(material_dir, f"{material_id} vs. Mu.png")
+        # Save the figures for each parameter: "Mat. <id> vs. Mu/Delta/t"
+        energy_gap_fig_mu_path = os.path.join(material_dir, f"Mat. {material_id} vs. Mu.png")
         fig_mu.savefig(energy_gap_fig_mu_path)
 
-        energy_gap_fig_t_path = os.path.join(material_dir, f"{material_id} vs. t.png")
+        energy_gap_fig_t_path = os.path.join(material_dir, f"Mat. {material_id} vs. t.png")
         fig_t.savefig(energy_gap_fig_t_path)
 
-        energy_gap_fig_delta_path = os.path.join(material_dir, f"{material_id} vs. Delta.png")
+        energy_gap_fig_delta_path = os.path.join(material_dir, f"Mat. {material_id} vs. Delta.png")
         fig_delta.savefig(energy_gap_fig_delta_path)
 
         # Identify top candidates for each material
         top_candidates_output, top_candidates_fig = identify_top_candidates(vqe_energies, exact_energies, optimal_parameters, parameter_combinations, errors, energy_gaps, total_seconds)
 
-        # Save the top candidates figure for each material (remove 'Mat.')
-        top_candidates_fig_path = os.path.join(material_dir, f"{material_id} Top Material Candidates.png")
+        # Save the top candidates figure for each material (with 'Mat.')
+        top_candidates_fig_path = os.path.join(material_dir, f"Mat. {material_id} Top Material Candidates.png")
         top_candidates_fig.savefig(top_candidates_fig_path)
 
         # Add top candidates output to the VQE outcomes file for each material
