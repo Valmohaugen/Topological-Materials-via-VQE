@@ -1,4 +1,5 @@
 import os, time
+from datetime import datetime
 import numpy as np
 import pandas as pd
 import matplotlib
@@ -38,6 +39,36 @@ delta_values = np.linspace(0.5, 2.0, 1)
 
 # 
 script_dir = os.path.dirname(os.path.abspath(__file__))
+# Output naming controls
+# Folder date format: MM.DD.YY (e.g., 09.30.25)
+RUN_DATE_MMDDYY = datetime.now().strftime("%m.%d.%y")
+
+
+def get_daily_run_index(base_dir: str, date_str: str) -> int:
+    """Return next run index for the given date by scanning existing dated folders.
+
+    Matches folder names that end with "-<date_str>" and extracts the numeric segment
+    immediately preceding the date. Works for patterns like:
+      - "Materials-<N>-<date_str>"
+      - "(mat <id>)-<N>-<date_str>"
+    """
+    max_idx = 0
+    try:
+        for root, dirs, _ in os.walk(base_dir):
+            for d in dirs:
+                if d.endswith(f"-{date_str}"):
+                    head = d[: -(len(date_str) + 1)]  # strip "-<date_str>"
+                    if '-' in head:
+                        idx_token = head.split('-')[-1]
+                        try:
+                            idx_val = int(idx_token)
+                            if idx_val > max_idx:
+                                max_idx = idx_val
+                        except ValueError:
+                            continue
+    except Exception:
+        pass
+    return max_idx + 1
 
 
 # 
@@ -983,9 +1014,16 @@ def identify_top_candidates(vqe_energies, exact_energies, optimal_parameters, pa
 
 if __name__ == "__main__":
     # Generate material database
+    # Determine daily run index for consistent naming across outputs
+    run_index = get_daily_run_index(script_dir, RUN_DATE_MMDDYY)
+
+    # Create dated folder for non per-material outputs, including daily index
+    materials_dir = os.path.join(script_dir, f"Materials-{run_index}-{RUN_DATE_MMDDYY}")
+    os.makedirs(materials_dir, exist_ok=True)
+
     materials_database = QuantumMaterialDatabase(num_materials)
     pd.set_option('display.colheader_justify', 'center')
-    materials_database_path = os.path.join(script_dir, "All Materials.txt")
+    materials_database_path = os.path.join(materials_dir, "All Materials.txt")
     with open(materials_database_path, 'w', encoding='utf-8') as file:
         file.write("Sample material properties:\n")
         file.write(materials_database.materials.head(num_materials).to_string(index=False))
@@ -1006,7 +1044,7 @@ if __name__ == "__main__":
 
     # Create and save dashboard
     dashboard_fig = create_materials_discovery_dashboard(selector)
-    dashboard_fig_path = os.path.join(script_dir, "Material Property Plots.png")
+    dashboard_fig_path = os.path.join(materials_dir, "Material Property Plots.png")
     dashboard_fig.savefig(dashboard_fig_path)
     discovery_results, top_materials = analyze_discovery_results()
     with open(materials_database_path, 'a', encoding='utf-8') as file:  
@@ -1014,7 +1052,7 @@ if __name__ == "__main__":
 
     # Create and show analysis plots
     advanced_fig = create_advanced_analysis_plots()
-    advanced_fig_path = os.path.join(script_dir, "Advanced Analysis Plots.png")
+    advanced_fig_path = os.path.join(materials_dir, "Advanced Analysis Plots.png")
     advanced_fig.savefig(advanced_fig_path)
     with open(materials_database_path, 'a', encoding='utf-8') as file:
         file.write("\n\n" + export_materials_recommendations())
@@ -1039,29 +1077,33 @@ if __name__ == "__main__":
         material_id = result['material_id']
         material_output = result['output']
 
-        # Print or save the output for each material
-        material_output_path = os.path.join(script_dir, f"Mat. {material_id} VQE Material Output.txt")
+        # Create per-material output directory: "<id>-<daily index>-MM.DD.YY"
+        material_dir = os.path.join(script_dir, f"{material_id}-{run_index}-{RUN_DATE_MMDDYY}")
+        os.makedirs(material_dir, exist_ok=True)
+
+        # Print or save the output for each material into its folder (remove 'Mat.')
+        material_output_path = os.path.join(material_dir, f"{material_id} VQE Material Output.txt")
         with open(material_output_path, 'w', encoding='utf-8') as file:
             file.write('\n'.join(material_output))
         
         # Unpack the VQE outcomes and analyze the results
         vqe_energies, exact_energies, optimal_parameters, errors, energy_gaps, output_list, fig_mu, fig_t, fig_delta = analyze_results(vqe_energies, exact_energies, optimal_parameters, parameter_combinations, total_seconds)
         
-        # Save the figures for each parameter
-        energy_gap_fig_mu_path = os.path.join(script_dir, f"Mat. {material_id} Energy Gap vs. mu.png")
+        # Save the figures for each parameter: "<id> vs. Mu/Delta/t"
+        energy_gap_fig_mu_path = os.path.join(material_dir, f"{material_id} vs. Mu.png")
         fig_mu.savefig(energy_gap_fig_mu_path)
 
-        energy_gap_fig_t_path = os.path.join(script_dir, f"Mat. {material_id} Energy Gap vs. t.png")
+        energy_gap_fig_t_path = os.path.join(material_dir, f"{material_id} vs. t.png")
         fig_t.savefig(energy_gap_fig_t_path)
 
-        energy_gap_fig_delta_path = os.path.join(script_dir, f"Mat. {material_id} Energy Gap vs. delta.png")
+        energy_gap_fig_delta_path = os.path.join(material_dir, f"{material_id} vs. Delta.png")
         fig_delta.savefig(energy_gap_fig_delta_path)
 
         # Identify top candidates for each material
         top_candidates_output, top_candidates_fig = identify_top_candidates(vqe_energies, exact_energies, optimal_parameters, parameter_combinations, errors, energy_gaps, total_seconds)
 
-        # Save the top candidates figure for each material
-        top_candidates_fig_path = os.path.join(script_dir, f"Mat. {material_id} Top Material Candidates.png")
+        # Save the top candidates figure for each material (remove 'Mat.')
+        top_candidates_fig_path = os.path.join(material_dir, f"{material_id} Top Material Candidates.png")
         top_candidates_fig.savefig(top_candidates_fig_path)
 
         # Add top candidates output to the VQE outcomes file for each material

@@ -1,0 +1,183 @@
+Running VQE for material #328 with properties:
+μ = -3.00, t = 0.50, delta = 0.50, run 1/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 117
+  Vqe Time: 1.02 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 2/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 3/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 4/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 5/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 6/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 7/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 8/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 9/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 10/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 11/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 12/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 13/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 14/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 15/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 16/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 17/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 18/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 19/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.66 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 20/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 21/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 22/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.66 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 23/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.65 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 24/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.70 s
+
+μ = -3.00, t = 0.50, delta = 0.50, run 25/25
+  VQE Energy: -2.9913
+  Exact Energy: -3.0000
+  Error: 0.008667
+  Function Evaluations: 76
+  Vqe Time: 0.69 s
+
+VQE Performance Statistics:
+  Mean absolute error: 0.008667
+  Max absolute error: 0.008667
+  Min absolute error: 0.008667
+  Std deviation of errors: 0.000000
+
+Top 5 Candidate Materials:
